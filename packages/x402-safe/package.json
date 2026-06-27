@@ -1,0 +1,15 @@
+{
+  "name": "x402-safe",
+  "version": "0.1.0",
+  "description": "Verify a counterparty before you pay it on x402. 78% of x402 recipients are unverifiable ghosts; this checks AgentRank before your client settles.",
+  "type": "module",
+  "main": "index.mjs",
+  "exports": { ".": "./index.mjs" },
+  "files": ["index.mjs", "README.md"],
+  "keywords": ["x402", "agent", "agentic-payments", "counterparty", "trust", "agentrank", "usdc", "base", "mcp"],
+  "license": "MIT",
+  "author": "Crest Deployment Systems LLC",
+  "homepage": "https://agentrank.info",
+  "repository": { "type": "git", "url": "https://github.com/andysalvo/agentrank" },
+  "engines": { "node": ">=18" }
+}

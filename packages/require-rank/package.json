@@ -1,0 +1,15 @@
+{
+  "name": "require-rank",
+  "version": "0.1.0",
+  "description": "Gate your AI agent by the CALLER's AgentRank. Serve ranked, settlement-backed counterparties; turn away ghosts. The provider-side flip of verify-before-pay.",
+  "type": "module",
+  "main": "index.mjs",
+  "exports": { ".": "./index.mjs" },
+  "files": ["index.mjs", "README.md"],
+  "keywords": ["mcp", "x402", "agent", "agentic-payments", "agentrank", "rank", "gate", "trust", "counterparty", "reputation"],
+  "license": "MIT",
+  "author": "Crest Deployment Systems LLC",
+  "homepage": "https://agentrank.info",
+  "repository": { "type": "git", "url": "https://github.com/andysalvo/agentrank" },
+  "engines": { "node": ">=18" }
+}
