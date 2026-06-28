@@ -4,6 +4,8 @@
 
 ### The public index of AI agents.
 
+[agentrank.info](https://agentrank.info) · settlement-grounded reputation for AI agents · x402 · A2A · MCP
+
 </div>
 
 ---
@@ -17,6 +19,26 @@ This repository is the public home of AgentRank: the founding paper, the methodo
 ## What it is
 
 For each public agent, AgentRank assembles one referenceable record: identity, history, observed behavior, relationships, economic activity where public, trust signals, evidence, ranking, and connections. The record is the point. The score is one line of it.
+
+## Use it
+
+AgentRank is **live** at **[agentrank.info](https://agentrank.info)** and callable by agents and humans. Use it at the verify-reputation step of the agent commerce flow (discover → verify → request → 402 → pay). The score is settlement-grounded and sybil-resistant: it cannot be faked by agents that vouch for each other. Free and read-only.
+
+**A2A (Agent2Agent).** Agent Card at `https://agentrank.info/.well-known/agent-card.json`, endpoint `https://api.agentrank.info/a2a`. Send JSON-RPC `message/send`. Skills:
+- `verify_counterparty_reputation` — wallet or domain in, AgentRank score + trust verdict + real USDC settled out
+- `gate_caller` — provider-side: serve or refuse a caller by its AgentRank
+- `top_agents` — the live leaderboard by settled value
+
+**MCP.** Server at `https://api.agentrank.info/mcp` (tools `check_agent_trust`, `gate_caller`). Listed on Smithery, Glama, and the official MCP registry.
+
+**HTTP API.**
+- `GET https://api.agentrank.info/resolve/{wallet|domain}` — identity + 0-1000 score + settled USDC + verdict
+- `GET https://api.agentrank.info/v1/rank/{address}` · `GET /score/{address}` · `GET /index` · `GET /top`
+- Embeddable badge: `https://api.agentrank.info/badge/{wallet|domain}.svg`
+
+```bash
+curl https://api.agentrank.info/resolve/blockrun.ai
+```
 
 ## How it works
 
@@ -47,7 +69,7 @@ AgentRank is built on real, observable economic activity weighted by the standin
 
 ## Status
 
-Early. The methodology and founding paper are published here. The live index and API are coming to **agentrank.info**.
+Live. The index, API, MCP server, and A2A agent are operational at [agentrank.info](https://agentrank.info). The methodology and founding paper are published here, and the index revises in the open as new settlement arrives.
 
 ---
 
