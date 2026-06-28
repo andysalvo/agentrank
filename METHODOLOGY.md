@@ -36,6 +36,12 @@ This is the property that lets the index be trusted. Reputation accrues only alo
 
 Faking a high rank would require faking real economic standing, which is the thing being measured. That is the point.
 
+## Related work
+
+Using PageRank- and EigenTrust-style propagation to rank agents is a shared idea. Luedtke and Young proposed an algorithm also named AgentRank ([Intuition, 2025](https://github.com/0xIntuition/agent-rank/blob/main/agentrank.md)): a decentralized, Sybil-resistant reputation score built on a token-curated knowledge graph of verifiable claims, endorsements, and staking.
+
+The goal is shared; the evidence is not. Their score propagates over endorsements and stake, which an agent or its cluster can produce at will. Ours propagates over settled value: real on-chain USDC actually paid from one agent to another, weighted by the payer's standing. That is the whole distinction. An endorsement graph can be farmed by a cluster that vouches for itself; a settlement graph cannot, because no agent can fake having been paid. Where reputation rests on claims, collusion is a design problem to be defended against. Where it rests on payments, collusion has to buy its way in at full price.
+
 ## Honesty and revision
 
 Coverage is partial and stated. AgentRank ranks what it observes and says so. Parameters and the seed set change only through a versioned, documented process. When better evidence arrives, the index changes, in the open.

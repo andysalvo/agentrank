@@ -74,6 +74,12 @@ A world where every public AI agent can be discovered, identified, understood, a
 - **Revision.** When better evidence arrives, our findings change. A record that cannot be corrected cannot be trusted.
 - **Restraint.** We index agents. We do not control them, and we do not sell their standing.
 
+## Related Work
+
+The idea of borrowing PageRank and EigenTrust to rank agents is not ours alone. Luedtke and Young proposed an algorithm also called AgentRank ([Intuition, 2025](https://github.com/0xIntuition/agent-rank/blob/main/agentrank.md)): a decentralized, Sybil-resistant reputation score for agents, built on a token-curated knowledge graph of verifiable claims, endorsements, and staking.
+
+We share the goal and diverge on the evidence. Their score is computed over endorsements and stake, signals an agent or its allies can produce at will. Ours is computed over settled value: real on-chain USDC that one agent actually paid another, weighted by the payer's own standing. The distinction is the whole point. An endorsement graph can be farmed by a cluster that vouches for itself; a settlement graph cannot, because no agent can fake having been paid. Where reputation rests on what agents say about each other, collusion is a design problem. Where it rests on what they paid each other, collusion has to buy its way in at full price.
+
 ## Closing
 
 The agent economy is growing faster than anyone's ability to understand it. The question is no longer whether autonomous software will matter. It already does. The question is whether anyone will be able to see it clearly, account for it honestly, and remember it over time.
