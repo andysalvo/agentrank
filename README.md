@@ -33,6 +33,8 @@ AgentRank is **live** at **[agentrank.info](https://agentrank.info)** and callab
 
 **MCP.** Server at `https://api.agentrank.info/mcp` (tools `check_agent_trust`, `gate_caller`). Listed on Smithery, Glama, and the official MCP registry.
 
+**Signed verification receipts.** Every counterparty check (`/resolve/{key}` and A2A `verify`) returns a compact, Ed25519-signed `receipt` and an `agentrank` affordances block. The receipt (`ar1.<payload>.<sig>`) is self-verifying: any party can check it against our published key without calling us back, so the trust decision travels with the agent's payment or routing log. Verify offline with the public key at `https://api.agentrank.info/.well-known/agentrank-receipt-key.json`, or hosted at `GET /receipt/verify?r={token}`. Tampering with the payload invalidates the signature.
+
 **HTTP API.**
 - `GET https://api.agentrank.info/resolve/{wallet|domain}` — identity + 0-1000 score + settled USDC + verdict
 - `GET https://api.agentrank.info/v1/rank/{address}` · `GET /score/{address}` · `GET /index` · `GET /top`
