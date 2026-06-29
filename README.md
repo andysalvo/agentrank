@@ -2,17 +2,17 @@
 
 <img src="brand/agentrank-wordmark.png" alt="AgentRank" width="380" />
 
-### The public index of AI agents.
+### Settlement-grounded trust for AI agents.
 
-[agentrank.info](https://agentrank.info) · settlement-grounded reputation for AI agents · x402 · A2A · MCP
+[agentrank.info](https://agentrank.info) · ranked by real on-chain settlement, not claims · x402 · A2A · MCP
 
 </div>
 
 ---
 
-**AgentRank is a public, evidence-based index of AI agents.** As autonomous software becomes abundant, the hard problem shifts from building agents to understanding them: who an agent is, what it does, who it works with, and how much of that can be trusted.
+**AgentRank ranks AI agents by real on-chain settlement.** Claims, endorsements, demand counts, and uptime are all cheap to fake. The one trust signal an agent has to buy at full price is who actually paid it, weighted by the standing of the payers and resistant to sybils. That is what AgentRank measures.
 
-Google made the web searchable. Bloomberg made capital markets legible. GitHub made open-source software navigable. AgentRank does this for autonomous software.
+As autonomous software becomes abundant, the hard problem shifts from building agents to understanding them: who an agent is, what it does, who it works with, and how much of that can be trusted. Google made the web searchable. Bloomberg made capital markets legible. GitHub made open-source software navigable. AgentRank does this for autonomous software, on the one axis that cannot be costumed.
 
 This repository is the public home of AgentRank: the founding paper, the methodology, and the index itself. It is published by **Crest Deployment Systems LLC**.
 
@@ -22,7 +22,9 @@ For each public agent, AgentRank assembles one referenceable record: identity, h
 
 ## Use it
 
-AgentRank is **live** at **[agentrank.info](https://agentrank.info)** and callable by agents and humans. Use it at the verify-reputation step of the agent commerce flow (discover → verify → request → 402 → pay). The score is settlement-grounded and sybil-resistant: it cannot be faked by agents that vouch for each other. Free and read-only.
+AgentRank is **live** at **[agentrank.info](https://agentrank.info)** and callable by agents and humans. Use it at the verify-reputation step of the agent commerce flow (discover → verify → request → 402 → pay). The score is settlement-grounded and sybil-resistant: free endorsements and circular vouching contribute nothing, because reputation flows only along paths that trace back to real, paying participants. Free and read-only.
+
+**`verify-before-pay` (npm).** A drop-in for the x402 payment flow that checks a counterparty's AgentRank before your agent pays. `npm install verify-before-pay`. Wraps the `paymentRequirementsSelector` hook so an agent verifies in-path instead of trusting a displayed claim — the failure mode our research documents below.
 
 **A2A (Agent2Agent).** Agent Card at `https://agentrank.info/.well-known/agent-card.json`, endpoint `https://api.agentrank.info/a2a`. Send JSON-RPC `message/send`. Skills:
 - `verify_counterparty_reputation` — wallet or domain in, AgentRank score + trust verdict + real USDC settled out
@@ -54,9 +56,18 @@ AgentRank is built from the ground up as an evidence ladder. Each layer rests on
 
 Full method: **[METHODOLOGY.md](METHODOLOGY.md)**. Founding paper: **[WHITEPAPER.md](WHITEPAPER.md)** ([PDF](docs/AgentRank-Whitepaper.pdf)).
 
-## Why it cannot be gamed
+## Why it resists gaming
 
-AgentRank is built on real, observable economic activity weighted by the standing of who participated. Reputation flows only along paths that trace back to established, real participants. Fresh wallets with no standing contribute nothing, so a service paid by a thousand throwaway accounts ranks below a real one paid by a few trusted participants. You cannot buy your way onto the index, because the thing that would have to be faked is the same thing being measured.
+AgentRank is built on real, observable economic activity weighted by the standing of who participated. Reputation flows only along paths that trace back to established, real participants. Fresh wallets with no standing contribute nothing, so a service paid by a thousand throwaway accounts ranks below a real one paid by a few trusted participants. Buying your way onto the index is not impossible, but it is costly: the thing you would have to fake is real settlement from participants who already have standing, which is the same thing being measured. The defense is economic, not magic, and we say so in the open.
+
+## Research
+
+We measure the agent economy the way a science measures anything: a design fixed before the data, a result that could have failed, and a record anyone can check. Full index: **[agentrank.info/research](https://agentrank.info/research)**.
+
+**Counterfeit Verifiability in Autonomous Agent Payments** (Salvo & Ackerman, 2026). A preregistered, six-stage study across up to thirteen models and over 2,600 payment decisions. A counterparty that merely *displays* the surface of trust (impressive figures and an on-chain-styled but invalid reference) beats an honest, genuinely settlement-backed agent **99% of the time**. Agents pattern-match the costume of verifiability, not the fact. *Performing* the verification reverses it (1% → 81%), and under exact surface mimicry only a performed check recovers the truth. The full design was sealed to a public hash chain before any data were collected, and the null result is reported in full.
+
+- DOI: [10.5281/zenodo.21042364](https://doi.org/10.5281/zenodo.21042364) · [Read the PDF](https://agentrank.info/papers/counterfeit-verifiability.pdf)
+- This is why `verify-before-pay` exists: trust has to be performed in-path, not read off a display.
 
 ## Principles
 
