@@ -35,6 +35,17 @@ AgentRank is **live** at **[agentrank.info](https://agentrank.info)** and callab
 
 **Signed verification receipts.** Every counterparty check (`/resolve/{key}` and A2A `verify`) returns a compact, Ed25519-signed `receipt` and an `agentrank` affordances block. The receipt (`ar1.<payload>.<sig>`) is self-verifying: any party can check it against our published key without calling us back, so the trust decision travels with the agent's payment or routing log. Verify offline with the public key at `https://api.agentrank.info/.well-known/agentrank-receipt-key.json`, or hosted at `GET /receipt/verify?r={token}`. Tampering with the payload invalidates the signature.
 
+**Platform-verifier mode.** Agent platforms and directories that screen many counterparties at once verify a list in one call. Stable contract at `https://api.agentrank.info/.well-known/agentrank-verify.json`.
+- `POST /verify/batch` with `{ "subjects": ["wallet|domain", ...], "policy": "cautious" }` (max 100). Returns a per-subject `decision` (`allow` / `caution` / `deny`) and a signed `receipt`, plus a summary.
+- Three named policies so callers do not have to reinvent thresholds: `permissive` (log-only), `cautious` (verified + score >= 400, default), `strict` (verified + score >= 700, fail closed). Or pass a custom `{min, requireVerified, onfail}`.
+- Also over A2A: send a data part `{ subjects:[...], policy:... }`.
+
+```bash
+curl -s -X POST https://api.agentrank.info/verify/batch \
+  -H 'content-type: application/json' \
+  -d '{"subjects":["blockrun.ai","0xabc..."],"policy":"strict"}'
+```
+
 **HTTP API.**
 - `GET https://api.agentrank.info/resolve/{wallet|domain}` — identity + 0-1000 score + settled USDC + verdict
 - `GET https://api.agentrank.info/v1/rank/{address}` · `GET /score/{address}` · `GET /index` · `GET /top`
