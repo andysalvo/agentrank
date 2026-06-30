@@ -19,7 +19,7 @@ Honesty rules baked in (a provenance company should not flatter its own metrics)
                 hits the literal key "test" / empty key                  -> monitoring, not demand
   - real      = everything else                                          -> actual demand
 """
-import json, sys, subprocess, collections, datetime, statistics, tempfile, os
+import json, sys, subprocess, collections, datetime, statistics, tempfile, os, re
 
 DROPLET = "root@167.71.254.98"
 REMOTE_LOG = "/home/andy/agentrank/calls.jsonl"
