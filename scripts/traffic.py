@@ -58,8 +58,14 @@ def is_crawler(r):
 
 def classify_source(rows):
     """Return 'poller' or 'real' for one IP's worth of external (non-internal/crawler) rows."""
+    TESTY = {"test", "None", "", "null", "census"}  # monitor probe keys
     keys = {str(r.get("key")) for r in rows}
-    if keys <= {"test", "None", "", "null"}:
+    if keys <= TESTY:
+        return "poller"
+    # A source whose keys are MOSTLY test/probe values is the uptime monitor exercising our tools,
+    # even if it now probes many endpoints (check_agent_trust, gate_caller, classify, state_of_x402).
+    testy = sum(1 for r in rows if str(r.get("key")) in TESTY)
+    if len(rows) >= 4 and testy / len(rows) >= 0.6:
         return "poller"
     times = sorted(t for t in (parse_at(r) for r in rows) if t)
     if len(times) >= 4:
