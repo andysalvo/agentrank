@@ -56,18 +56,37 @@ def is_crawler(r):
     return r.get("crawler") or any(c in ua for c in CRAWLER)
 
 
+def _plausible_target(k):
+    """A real demand lookup is a wallet (0x..40hex), a domain (has a dot), or 'top'/'census'.
+    Junk like '[object Object]', 'undefined', 'function', 'warn', 'test' is a bot/scraper artifact."""
+    k = str(k or "")
+    if k in ("top", "census"):
+        return True
+    if re.fullmatch(r"0x[0-9a-fA-F]{40}", k):
+        return True
+    if "." in k and " " not in k and "object" not in k.lower():
+        return True
+    return False
+
+
 def classify_source(rows):
     """Return 'poller' or 'real' for one IP's worth of external (non-internal/crawler) rows."""
     TESTY = {"test", "None", "", "null", "census"}  # monitor probe keys
     keys = {str(r.get("key")) for r in rows}
     if keys <= TESTY:
         return "poller"
-    # A source whose keys are MOSTLY test/probe values is the uptime monitor exercising our tools,
-    # even if it now probes many endpoints (check_agent_trust, gate_caller, classify, state_of_x402).
+    # A source whose keys are MOSTLY test/probe values is the uptime monitor exercising our tools.
     testy = sum(1 for r in rows if str(r.get("key")) in TESTY)
     if len(rows) >= 4 and testy / len(rows) >= 0.6:
         return "poller"
+    # Scraper/bot: a burst of many calls whose targets are mostly junk (not wallets/domains).
+    plausible = sum(1 for r in rows if _plausible_target(r.get("key")))
+    if len(rows) >= 8 and plausible / len(rows) < 0.4:
+        return "poller"
+    # Burst from one IP (many calls in a tiny window) with no plausible targets = scraper.
     times = sorted(t for t in (parse_at(r) for r in rows) if t)
+    if len(rows) >= 20 and times and (times[-1] - times[0]).total_seconds() < 180 and plausible / len(rows) < 0.6:
+        return "poller"
     if len(times) >= 4:
         gaps = [(times[i + 1] - times[i]).total_seconds() / 3600 for i in range(len(times) - 1)]
         mean = statistics.mean(gaps) or 1
